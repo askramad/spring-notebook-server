@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<graal-sdk.version>19.2.0</graal-sdk.version>
 	</properties>
 	
 	<distributionManagement>
@@ -29,15 +30,42 @@
 		</snapshotRepository>
 	</distributionManagement>
 
+
 	<dependencies>
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-data-redis</artifactId>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>graal-sdk</artifactId>
+            <version>19.1.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.graalvm.js/js -->
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js</artifactId>
+            <version>19.1.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.graalvm.js/js-scriptengine -->
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js-scriptengine</artifactId>
+            <version>19.1.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.graalvm.compiler/compiler -->
+        <dependency>
+            <groupId>org.graalvm.compiler</groupId>
+            <artifactId>compiler</artifactId>
+            <version>19.1.1</version>
+        </dependency>
+        
+        <dependency>
+		  <groupId>org.graalvm.truffle</groupId>
+		  <artifactId>truffle-api</artifactId>
+		  <version>19.1.1</version>
 		</dependency>
 
 		<dependency>
