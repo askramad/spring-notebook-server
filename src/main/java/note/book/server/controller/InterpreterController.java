@@ -41,7 +41,7 @@ public class InterpreterController {
         String code = request.getCode().substring(request.getCode().indexOf('\n') + 1);
         String lang = request.getCode().substring(1, request.getCode().indexOf('\n'));
         String sessionId = request.getSessionId();
-        logger.info("code : {},lang:{}", code, lang);
+        logger.info("code : {},lang : {}", code, lang);
         InterpreterResponseDto response = new InterpreterResponseDto();
         if (sessionId == null) {
             sessionId = UUID.randomUUID().toString();
