@@ -25,7 +25,7 @@ The code is formatted like this:</p>
 “result”: “&lt;interpretation-result&gt;”
 }
 </code></pre>
-<<p>If a user uses a variable in a piece of code, it will be accessible on subsequent executions. For example. The following requests are send:</p>
+<p>If a user uses a variable in a piece of code, it will be accessible on subsequent executions. For example. The following requests are send:</p>
 <pre><code>{
 “code”: “%python a = 1”
 }
