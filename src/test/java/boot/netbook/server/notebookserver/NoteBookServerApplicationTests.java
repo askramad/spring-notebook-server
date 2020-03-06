@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.UUID;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +60,37 @@ class NoteBookServerApplicationTests {
         InterpreterRequestDto body = new InterpreterRequestDto();
         body.setCode("%js\nconsole.log('Hello world');");
         this.mockMvc.perform(post("/execute").content(mapper.writeValueAsString(body)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.result", is("Hello world\n")));
+                .andExpect(jsonPath("$.result", is("Hello world\n")));
+    }
+
+    @Test
+    public void throwErrorMessage() throws Exception {
+        InterpreterRequestDto body = new InterpreterRequestDto();
+        body.setCode("%js\nconsole.log(a);");
+        this.mockMvc.perform(post("/execute").content(mapper.writeValueAsString(body)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.result", is("ReferenceError: a is not defined")));
+    }
+
+    @Test
+    public void remainContextWithSession() throws Exception {
+        InterpreterRequestDto body = new InterpreterRequestDto();
+        body.setSessionId(UUID.randomUUID().toString());
+        body.setCode("%js\nvar a = 5;");
+        this.mockMvc.perform(post("/execute").content(mapper.writeValueAsString(body)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)));
+
+        body.setCode("%js\nconsole.log(a);");
+        this.mockMvc.perform(post("/execute").content(mapper.writeValueAsString(body)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.result", is("5\n")));
+
+    }
+
+    @Test
+    public void closeExecutionWhenTimeOut() throws Exception {
+        InterpreterRequestDto body = new InterpreterRequestDto();
+        body.setCode("%js\nwhile(true);");
+        this.mockMvc.perform(post("/execute").content(mapper.writeValueAsString(body)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.result", is("Execution got cancelled.")));
     }
 
 }

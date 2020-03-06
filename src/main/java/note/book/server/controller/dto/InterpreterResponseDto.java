@@ -4,8 +4,6 @@ public class InterpreterResponseDto {
 
     private String result;
 
-    private boolean success;
-
     private String sessionId;
 
     public String getResult() {
@@ -14,14 +12,6 @@ public class InterpreterResponseDto {
 
     public void setResult(String result) {
         this.result = result;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 
     public String getSessionId() {

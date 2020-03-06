@@ -16,11 +16,11 @@ import note.book.server.service.InterpreterService;
 @Service
 public class InterpreterServiceImp implements InterpreterService {
 
-    private final ExecutionContextStoreImp store;
+    private final ExecutionContextStoreImp executionContextStoreImp;
 
     @Autowired
-    public InterpreterServiceImp(ExecutionContextStoreImp store) {
-        this.store = store;
+    public InterpreterServiceImp(ExecutionContextStoreImp executionContextStoreImp) {
+        this.executionContextStoreImp = executionContextStoreImp;
     }
 
     @Value("${execution.time.out}")
@@ -28,13 +28,13 @@ public class InterpreterServiceImp implements InterpreterService {
 
     @Override
     public String execute(String lang, String code, String sessionId) {
-        ExecutionContext context = this.store.getContext(sessionId);
+        ExecutionContext context = this.executionContextStoreImp.getContext(sessionId);
         Timer timer = new Timer(true);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 context.getContext().close(true);
-                store.resetContext(sessionId);
+                executionContextStoreImp.resetContext(sessionId);
             }
         }, executionTimeOut * 1000);
         String output;
